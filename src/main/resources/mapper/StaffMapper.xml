@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmos.sms.dao.StaffDAO">
+  <resultMap id="BaseResultMap" type="com.cmos.sms.beans.Staff">
+    <id column="staff_id" jdbcType="INTEGER" property="staff_id" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staff_name" />
+    <result column="staff_date_of_birth" jdbcType="DATE" property="staff_date_of_birth" />
+    <result column="staff_department" jdbcType="VARCHAR" property="staff_department" />
+    <result column="staff_post" jdbcType="VARCHAR" property="staff_post" />
+    <result column="staff_level" jdbcType="VARCHAR" property="staff_level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    staff_id, staff_name, staff_date_of_birth, staff_department, staff_post, staff_level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from staff_info
+    where staff_id = #{staff_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff_info
+    where staff_id = #{staff_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cmos.sms.beans.Staff">
+    insert into staff_info (staff_id, staff_name, staff_date_of_birth, 
+      staff_department, staff_post, staff_level
+      )
+    values (#{staff_id,jdbcType=INTEGER}, #{staff_name,jdbcType=VARCHAR}, #{staff_date_of_birth,jdbcType=DATE}, 
+      #{staff_department,jdbcType=VARCHAR}, #{staff_post,jdbcType=VARCHAR}, #{staff_level,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmos.sms.beans.Staff">
+    insert into staff_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staff_id != null">
+        staff_id,
+      </if>
+      <if test="staff_name != null">
+        staff_name,
+      </if>
+      <if test="staff_date_of_birth != null">
+        staff_date_of_birth,
+      </if>
+      <if test="staff_department != null">
+        staff_department,
+      </if>
+      <if test="staff_post != null">
+        staff_post,
+      </if>
+      <if test="staff_level != null">
+        staff_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staff_id != null">
+        #{staff_id,jdbcType=INTEGER},
+      </if>
+      <if test="staff_name != null">
+        #{staff_name,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_date_of_birth != null">
+        #{staff_date_of_birth,jdbcType=DATE},
+      </if>
+      <if test="staff_department != null">
+        #{staff_department,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_post != null">
+        #{staff_post,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_level != null">
+        #{staff_level,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmos.sms.beans.Staff">
+    update staff_info
+    <set>
+      <if test="staff_name != null">
+        staff_name = #{staff_name,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_date_of_birth != null">
+        staff_date_of_birth = #{staff_date_of_birth,jdbcType=DATE},
+      </if>
+      <if test="staff_department != null">
+        staff_department = #{staff_department,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_post != null">
+        staff_post = #{staff_post,jdbcType=VARCHAR},
+      </if>
+      <if test="staff_level != null">
+        staff_level = #{staff_level,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where staff_id = #{staff_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmos.sms.beans.Staff">
+    update staff_info
+    set staff_name = #{staff_name,jdbcType=VARCHAR},
+      staff_date_of_birth = #{staff_date_of_birth,jdbcType=DATE},
+      staff_department = #{staff_department,jdbcType=VARCHAR},
+      staff_post = #{staff_post,jdbcType=VARCHAR},
+      staff_level = #{staff_level,jdbcType=VARCHAR}
+    where staff_id = #{staff_id,jdbcType=INTEGER}
+  </update>
+</mapper>

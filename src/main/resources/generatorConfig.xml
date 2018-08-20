@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--使用本地仓库的路径，mac上缺省的maven本地仓库在/User/{user.home}/.m2/目录下-->
+    <!--如果使用的数据是mysql8，需要将jdbc升级至5.5或8，否则会出现Unknown system variable 'query_cache_size'的错误
+    参考连接：https://github.com/sysown/proxysql/issues/1408-->
+    <classPathEntry
+            location="/Users/huangshuai/.m2/repository/mysql/mysql-connector-java/8.0.12/mysql-connector-java-8.0.12.jar"/>
+    <context id="MysqlTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/sms?characterEncoding=utf8"
+                        userId="root" password="admin">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--配置生成的Bean的存放目录等-->
+        <javaModelGenerator targetPackage="com.cmos.sms.beans" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <property name="useActualColumnNames" value="true"/>
+        </javaModelGenerator>
+
+        <!--配置生成的SQLmap的存放目录等-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--配置生成的DAO的存放目录等-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.cmos.sms.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--配置数据库中的表名，生成的Bean名，以及生成哪些方法-->
+        <table tableName="staff_info" domainObjectName="Staff" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+    </context>
+</generatorConfiguration>
