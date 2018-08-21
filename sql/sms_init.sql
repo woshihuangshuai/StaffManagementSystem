@@ -47,3 +47,14 @@ null,
 '市场拓展团队', 
 'Level 10'
 );
+
+/*显示当前数据库时间*/
+select NOW();
+/*查看当前数据库时区*/
+show variables like "%time_zone%";
+/*设置全局数据库时区*/
+set global time_zone = '+8:00';
+/*设置当前会话时区*/
+set time_zone = '+8:00';
+/*立即生效*/
+flush privileges;
