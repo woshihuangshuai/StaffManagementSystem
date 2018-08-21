@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -19,6 +22,8 @@ public class StaffController {
 
     @Autowired
     private IStaffSV staffservice;
+
+    private DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(value = "/{staff_id}", method = RequestMethod.GET)
     public String findStaffByStaffId(@PathVariable(value = "staff_id") int staff_id, Model model) {
@@ -61,11 +66,11 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String insertStaff(HttpServletRequest request, Model model) {
+    public String insertStaff(HttpServletRequest request, Model model) throws ParseException {
         model.addAttribute("Operation", "insert");
         Staff staff = new Staff(null,
                 request.getParameter("staff_name"),
-                (Date) request.getAttribute("staff_date_of_birth"),
+                dateformat.parse(request.getParameter("staff_date_of_birth")),
                 request.getParameter("staff_department"),
                 request.getParameter("staff_post"),
                 request.getParameter("staff_level"));
@@ -95,11 +100,11 @@ public class StaffController {
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String updataStaff(HttpServletRequest request, Model model) {
+    public String updataStaff(HttpServletRequest request, Model model) throws ParseException {
         model.addAttribute("Operation", "update");
         Staff staff = new Staff(Long.parseLong(request.getParameter("staff_id")),
                 request.getParameter("staff_name"),
-                (Date) request.getAttribute("staff_date_of_birth"),
+                dateformat.parse(request.getParameter("staff_date_of_birth")),
                 request.getParameter("staff_department"),
                 request.getParameter("staff_post"),
                 request.getParameter("staff_level"));
