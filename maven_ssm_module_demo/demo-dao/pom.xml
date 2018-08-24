@@ -20,21 +20,18 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
         <!-- 模块依赖 start -->
         <dependency>
             <groupId>com.cmos</groupId>
             <artifactId>demo-beans</artifactId>
         </dependency>
         <!-- 模块依赖 end -->
-
         <!-- Spring dependencies start -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -63,21 +60,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <!-- Spring dependencies end -->
-
         <!-- MyBatis dependency start -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -110,7 +96,5 @@
             <version>1.1.10</version>
         </dependency>
         <!-- MyBatis dependency end -->
-
     </dependencies>
-
 </project>

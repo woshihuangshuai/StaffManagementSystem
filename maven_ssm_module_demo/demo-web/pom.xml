@@ -87,7 +87,7 @@
         </dependency>
         <!-- Spring dependencies end -->
 
-        <!-- java ee -->
+        <!-- java ee: dependency of HttpServletRequest-->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
