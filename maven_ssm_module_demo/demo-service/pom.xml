@@ -12,6 +12,7 @@
     <artifactId>demo-service</artifactId>
 
     <dependencies>
+        <!-- Module -->
         <dependency>
             <groupId>com.cmos</groupId>
             <artifactId>demo-beans</artifactId>

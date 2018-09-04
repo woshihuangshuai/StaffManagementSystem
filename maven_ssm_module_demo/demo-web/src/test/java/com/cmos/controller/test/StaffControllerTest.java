@@ -2,6 +2,8 @@ package com.cmos.controller.test;
 
 import com.cmos.beans.Staff;
 import com.cmos.iservice.IStaffSV;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,9 +44,12 @@ public class StaffControllerTest {
     @Test
     public void insertFormTest() throws Exception {
         String viewName = "insertForm";
-        mockMvc.perform(MockMvcRequestBuilders.get("/staff/insert"))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/staff/insert"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name(viewName));
+                .andExpect(MockMvcResultMatchers.view().name(viewName))
+                .andDo(MockMvcResultHandlers.print());
+        String resultViewName = resultActions.andReturn().getModelAndView().getViewName();
+        MatcherAssert.assertThat(resultViewName, Is.is(viewName));
     }
 
     @Test
