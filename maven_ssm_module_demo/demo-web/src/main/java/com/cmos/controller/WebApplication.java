@@ -2,14 +2,13 @@ package com.cmos.controller;
 
 
 import com.cmos.dao.DaoApplication;
+import com.cmos.service.impl.config.SVImplConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 
 
-@Import(DaoApplication.class)
-@ImportResource(value = "classpath:ApplicationContext.xml")
+@Import(value = {DaoApplication.class, SVImplConfig.class})
 @SpringBootApplication
 public class WebApplication {
     public static void main(String[] args) {

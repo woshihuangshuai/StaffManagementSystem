@@ -13,6 +13,7 @@
     <artifactId>demo-service-impl</artifactId>
 
     <dependencies>
+        <!-- Module -->
         <dependency>
             <groupId>com.cmos</groupId>
             <artifactId>demo-beans</artifactId>
@@ -24,6 +25,11 @@
         <dependency>
             <groupId>com.cmos</groupId>
             <artifactId>demo-service</artifactId>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
