@@ -3,8 +3,9 @@ package com.cmos.rest;
 import com.cmos.beans.Staff;
 import com.cmos.beans.dto.StaffDTO;
 import com.cmos.iservice.IStaffSV;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
@@ -25,9 +26,8 @@ public class StaffRestController {
         this.iStaffSV = iStaffSV;
     }
 
-    /**
-     * REST API Read
-     */
+    @ApiOperation(value = "获取员工", notes = "根据staff_id获取员工")
+    @ApiImplicitParam(name = "staff_id", value = "员工Id", required = true, dataType = "String")
     @RequestMapping(value = "/{staff_id}", method = RequestMethod.GET)
     public Map<String, Object> findStaffByStaffId(@PathVariable(value = "staff_id") int staff_id) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -36,9 +36,8 @@ public class StaffRestController {
         return resultMap;
     }
 
-    /**
-     * REST API Delete
-     */
+    @ApiOperation(value = "删除员工", notes = "跟去员工Id删除员工")
+    @ApiImplicitParam(name = "staff_id", value = "员工Id", required = true, dataType = "String")
     @RequestMapping(value = "/delete/{staff_id}", method = RequestMethod.GET)
     public Map<String, Object> deleteStaffByStaffId(@PathVariable(value = "staff_id") int staff_id) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -53,9 +52,8 @@ public class StaffRestController {
         return resultMap;
     }
 
-    /**
-     * REST API Create
-     */
+    @ApiOperation(value = "插入员工", notes = "向数据库中添加员工信息", response = Map.class)
+    @ApiImplicitParam(name = "staffDTO", value = "员工数据传输对象", required = true, dataType = "StaffDTO")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public Map<String, Object> insertStaff(@RequestBody StaffDTO staffDTO) throws ParseException {
         Map<String, Object> resultMap = new HashMap<>();
@@ -80,9 +78,8 @@ public class StaffRestController {
         return resultMap;
     }
 
-    /**
-     * REST API Update
-     */
+    @ApiOperation(value = "更新员工", notes = "根据员工Id更新员工信息，员工Id不可更新")
+    @ApiImplicitParam(name = "staffDTO", value = "员工数据传输对象", required = true, dataType = "StaffDTO")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Map updateForm(@RequestBody StaffDTO staffDTO) throws ParseException {
         Map<String, Object> resultMap = new HashMap<>();

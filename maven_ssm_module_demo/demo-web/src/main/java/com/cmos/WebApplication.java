@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 
 
 @Import(value = {DaoApplication.class, SVImplConfig.class})
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.cmos"})
 public class WebApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class);
