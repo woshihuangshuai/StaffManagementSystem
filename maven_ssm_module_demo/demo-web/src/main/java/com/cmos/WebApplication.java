@@ -1,4 +1,4 @@
-package com.cmos.controller;
+package com.cmos;
 
 
 import com.cmos.dao.DaoApplication;

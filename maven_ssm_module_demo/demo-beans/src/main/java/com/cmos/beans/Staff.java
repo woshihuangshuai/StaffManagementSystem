@@ -6,15 +6,6 @@ public class Staff {
 
     }
 
-    public Staff(java.lang.Long staff_id, java.lang.String staff_name, java.sql.Date staff_date_of_birth, java.lang.String staff_department, java.lang.String staff_post, java.lang.String staff_level) {
-        this.staff_id = staff_id;
-        this.staff_name = staff_name;
-        this.staff_date_of_birth = new java.util.Date(staff_date_of_birth.getTime());
-        this.staff_department = staff_department;
-        this.staff_post = staff_post;
-        this.staff_level = staff_level;
-    }
-
     public Staff(java.lang.Long staff_id, java.lang.String staff_name, java.util.Date staff_date_of_birth, java.lang.String staff_department, java.lang.String staff_post, java.lang.String staff_level) {
         this.staff_id = staff_id;
         this.staff_name = staff_name;
@@ -57,7 +48,11 @@ public class Staff {
     }
 
     public void setStaff_date_of_birth(java.util.Date staff_date_of_birth) {
-        this.staff_date_of_birth = new java.sql.Date(staff_date_of_birth.getTime());
+        if (staff_date_of_birth != null) {
+            this.staff_date_of_birth = new java.sql.Date(staff_date_of_birth.getTime());
+        } else {
+            this.staff_date_of_birth = null;
+        }
     }
 
     public String getStaff_department() {
