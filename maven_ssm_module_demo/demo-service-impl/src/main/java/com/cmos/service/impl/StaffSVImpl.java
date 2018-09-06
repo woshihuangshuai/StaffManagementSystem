@@ -1,12 +1,17 @@
 package com.cmos.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.cmos.beans.Staff;
 import com.cmos.dao.StaffDAO;
 import com.cmos.iservice.IStaffSV;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
+@Service(
+        version = "${demo.service.version}",
+        application = "${dubbo.application.id}",
+        protocol = "${dubbo.protocol.id}",
+        registry = "${dubbo.registry.id}"
+)
 public class StaffSVImpl implements IStaffSV {
 
     @Autowired

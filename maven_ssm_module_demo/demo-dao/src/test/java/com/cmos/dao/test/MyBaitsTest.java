@@ -1,8 +1,8 @@
 package com.cmos.dao.test;
 
 import com.cmos.beans.Staff;
-import com.cmos.dao.DaoApplication;
 import com.cmos.dao.StaffDAO;
+import com.cmos.dao.config.MybatisConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Import(value = {DaoApplication.class})
+@Import(value = {MybatisConfig.class})
 public class MyBaitsTest {
 
     @Autowired

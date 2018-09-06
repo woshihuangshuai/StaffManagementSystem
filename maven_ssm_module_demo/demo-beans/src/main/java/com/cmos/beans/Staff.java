@@ -1,6 +1,8 @@
 package com.cmos.beans;
 
-public class Staff {
+import java.io.Serializable;
+
+public class Staff implements Serializable {
 
     public Staff() {
 

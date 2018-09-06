@@ -1,8 +1,8 @@
 package com.cmos.controller;
 
-import com.cmos.iservice.IStaffSV;
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.cmos.beans.Staff;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cmos.iservice.IStaffSV;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,9 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/staff")
 public class StaffController {
 
-    @Autowired
+    @Reference(version = "${demo.service.version}",
+            application = "${dubbo.application.id}",
+            url = "dubbo://localhost:12345")
     private IStaffSV staffSV;
 
     private DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");

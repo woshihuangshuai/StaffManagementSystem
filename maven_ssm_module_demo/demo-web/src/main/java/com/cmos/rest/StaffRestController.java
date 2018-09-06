@@ -1,5 +1,6 @@
 package com.cmos.rest;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.cmos.beans.Staff;
 import com.cmos.beans.dto.StaffDTO;
 import com.cmos.iservice.IStaffSV;
@@ -18,13 +19,11 @@ import java.util.Map;
 @RequestMapping("/rest/staff")
 public class StaffRestController {
 
-    private final IStaffSV iStaffSV;
+    @Reference(version = "${demo.service.version}",
+            application = "${dubbo.application.id}",
+            url = "dubbo://localhost:12345")
+    private IStaffSV iStaffSV;
     private DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-
-    @Autowired
-    public StaffRestController(IStaffSV iStaffSV) {
-        this.iStaffSV = iStaffSV;
-    }
 
     @ApiOperation(value = "获取员工", notes = "根据staff_id获取员工")
     @ApiImplicitParam(name = "staff_id", value = "员工Id", required = true, dataType = "String")
