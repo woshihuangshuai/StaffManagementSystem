@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" monitorInterval="30">
+<Configuration status="WARN" monitorInterval="30"><!-- log4j2日志打印级别 -->
     <Properties>
         <Property name="PID">????</Property>
         <Property name="LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
     </Properties>
-    <Appenders>
+
+    <Appenders><!-- 定义日志输入到哪里 -->
+        <!-- 定义一个控制台追加器 -->
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
+        <File name="File" filename="log/ssm.log">
+            <PatternLayout pattern="${LOG_PATTERN}}" />
+        </File>
     </Appenders>
+
     <Loggers>
+        <!-- Logger的name属性可以指定包名， 分包配置日志的输出 -->
         <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
         <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
         <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
 
-        <Root level="info">
+        <!-- 控制org.springframework包下的所有日志输出 -->
+        <!--<Logger name="org.springframework" level="info" additivity="false">-->
+            <!--<AppenderRef ref="File" />-->
+        <!--</Logger>-->
+
+        <Root level="info"><!-- 全局日志打印级别，只能控制自己写的代码中的日志级别 -->
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
