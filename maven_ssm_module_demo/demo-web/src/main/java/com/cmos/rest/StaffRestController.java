@@ -6,8 +6,7 @@ import com.cmos.beans.dto.StaffDTO;
 import com.cmos.iservice.IStaffSV;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
@@ -19,8 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rest/staff")
 public class StaffRestController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Reference(version = "${demo.service.version}",
             application = "${dubbo.application.id}",
@@ -35,7 +32,6 @@ public class StaffRestController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("action", "read");
         resultMap.put("result", iStaffSV.findStaffByStaffId(staff_id));
-        logger.error("不要慌！我就试一下！");
         return resultMap;
     }
 
