@@ -75,8 +75,8 @@ public class StaffController {
                 request.getParameter("staff_department"),
                 request.getParameter("staff_post"),
                 request.getParameter("staff_level"));
-        int insertResult = staffSV.insertStaff(staff);
-        model.addAttribute("Result", insertResult);
+        Object resultObject = staffSV.insertStaff(staff);
+        model.addAttribute("Result", resultObject);
         return "operationResult";
     }
 
@@ -109,8 +109,8 @@ public class StaffController {
                 request.getParameter("staff_department"),
                 request.getParameter("staff_post"),
                 request.getParameter("staff_level"));
-        int insertResult = staffSV.updateStaffByStaffId(staff);
-        model.addAttribute("Result", insertResult);
+        Object resultObject = staffSV.updateStaffByStaffId(staff);
+        model.addAttribute("Result", resultObject);
         return "operationResult";
     }
 }

@@ -16,7 +16,7 @@ public interface IStaffSV {
      * @param staff
      * @return
      */
-    int updateStaffByStaffId(Staff staff);
+    Staff updateStaffByStaffId(Staff staff);
 
     /**
      * 根据staff_id删除员工信息
@@ -30,6 +30,6 @@ public interface IStaffSV {
      * @param staff
      * @return
      */
-    int insertStaff(Staff staff);
+    Staff insertStaff(Staff staff);
 
 }

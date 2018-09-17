@@ -72,8 +72,8 @@ public class StaffRestController {
         staff.setStaff_post(staffDTO.getStaff_post());
         staff.setStaff_level(staffDTO.getStaff_level());
 
-        int resultCode = iStaffSV.insertStaff(staff);
-        if (resultCode == 1) {
+        Object result = iStaffSV.insertStaff(staff);
+        if (result != null) {
             resultMap.put("result", "success");
         } else {
             resultMap.put("result", "failure");
@@ -111,8 +111,8 @@ public class StaffRestController {
         staff.setStaff_level(
                 staffDTO.getStaff_level() == null ?
                         staff.getStaff_level() : staffDTO.getStaff_level());
-        int resultCode = iStaffSV.updateStaffByStaffId(staff);
-        if (resultCode == 1) {
+        Object result = iStaffSV.updateStaffByStaffId(staff);
+        if (result != null) {
             resultMap.put("result", "success");
         } else {
             resultMap.put("result", "failure");

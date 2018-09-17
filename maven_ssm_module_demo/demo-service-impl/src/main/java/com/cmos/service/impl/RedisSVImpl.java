@@ -35,7 +35,7 @@ public class RedisSVImpl implements IRedisSV {
 
         BoundListOperations boundListOperations = redisTemplate.boundListOps("sms_list");
         boundListOperations.rightPush("Huang");
-        boundListOperations.rightPush("Shuai"); 
+        boundListOperations.rightPush("Shuai");
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", "Success");

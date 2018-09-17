@@ -2,6 +2,7 @@ package com.cmos.service.impl.config;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -13,6 +14,7 @@ import javax.annotation.PostConstruct;
  * @author HS
  */
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
     @Autowired

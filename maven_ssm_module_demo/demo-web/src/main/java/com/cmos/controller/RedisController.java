@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+
+/**
+ * 操作redis数据库
+ * @author HS
+ */
 @RestController
 @RequestMapping("/redis")
 public class RedisController {
@@ -19,7 +24,7 @@ public class RedisController {
             url = "dubbo://localhost:12345")
     private IRedisSV redisSV = null;
 
-    @ApiOperation(value = "测试Redis服务")
+    @ApiOperation(value = "测试Redis服务", response = Map.class)
     @RequestMapping(value = "/testRedis", method = RequestMethod.GET)
     public Map testRedis() {
         return redisSV.testStringAndHash();
