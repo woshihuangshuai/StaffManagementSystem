@@ -26,6 +26,10 @@
             <groupId>com.cmos</groupId>
             <artifactId>demo-service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.cmos</groupId>
+            <artifactId>demo-utils</artifactId>
+        </dependency>
         <!-- Spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
