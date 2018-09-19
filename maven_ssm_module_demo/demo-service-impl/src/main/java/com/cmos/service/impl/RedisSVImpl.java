@@ -4,7 +4,6 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.cmos.iservice.IRedisSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
-import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
