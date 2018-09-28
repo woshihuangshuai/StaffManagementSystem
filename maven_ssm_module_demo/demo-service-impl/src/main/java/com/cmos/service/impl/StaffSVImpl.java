@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service(
@@ -34,7 +35,7 @@ public class StaffSVImpl implements IStaffSV {
      */
     @Log(logStr = "根据staff_id查找用户信息")
     @Override
-    @Transactional(rollbackFor = {RuntimeException.class})
+    @Transactional(rollbackFor = {RuntimeException.class}, isolation = Isolation.REPEATABLE_READ)
     @Cacheable(value = "redisCache", key = "'redis_user_'+#staff_id")
     public Staff findStaffByStaffId(int staff_id) {
         return staffdao.selectByPrimaryKey(staff_id);
@@ -48,7 +49,7 @@ public class StaffSVImpl implements IStaffSV {
      */
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
-    @CachePut(value = "redisCache", condition = "#result != 0", key = "'redis_user_'+#result.staff_id")
+    @CachePut(value = "redisCache", condition = "#result != 'null'", key = "'redis_user_'+#result.staff_id")
     public Staff updateStaffByStaffId(Staff staff) {
 
         int resultCode = staffdao.updateByPrimaryKey(staff);

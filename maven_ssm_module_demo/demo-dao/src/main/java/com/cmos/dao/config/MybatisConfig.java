@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
+/**
+ * @author HS
+ */
 @MapperScan("com.cmos.dao")
 @EnableTransactionManagement
 @SpringBootApplication

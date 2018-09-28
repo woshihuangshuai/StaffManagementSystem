@@ -2,7 +2,12 @@ package com.cmos.beans;
 
 import java.io.Serializable;
 
+/**
+ * @author HS
+ */
 public class Staff implements Serializable {
+
+    private static final long serialVersionUID = 4425822318009583790L;
 
     public Staff() {
 
