@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmos.dao.AttendanceRecordDAO">
+    <resultMap id="BaseResultMap" type="com.cmos.beans.AttendanceRecordDO">
+        <id column="record_id" jdbcType="INTEGER" property="recordId"/>
+        <result column="staff_id" jdbcType="INTEGER" property="staffId"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    record_id, staff_id, `date`
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attendance_record
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </select>
+    <select id="getRecordByStaffId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_attendance_record
+        where staff_id = #{staffId,jdbcType=INTEGER}
+    </select>
+    <select id="getRecordList" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select t1.staff_name, t1.staff_department, t2.date
+        from staff_info t1 INNER JOIN t_attendance_record t2 ON t1.staff_id = t2.staff_id
+        where 1=1 and
+            t2.staff_id = #{staffId, jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_attendance_record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.cmos.beans.AttendanceRecordDO">
+    insert into t_attendance_record (record_id, staff_id, `date`
+      )
+    values (#{recordId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.cmos.beans.AttendanceRecordDO">
+        insert into t_attendance_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                record_id,
+            </if>
+            <if test="staffId != null">
+                staff_id,
+            </if>
+            <if test="date != null">
+                `date`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                #{recordId,jdbcType=INTEGER},
+            </if>
+            <if test="staffId != null">
+                #{staffId,jdbcType=INTEGER},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cmos.beans.AttendanceRecordDO">
+        update t_attendance_record
+        <set>
+            <if test="staffId != null">
+                staff_id = #{staffId,jdbcType=INTEGER},
+            </if>
+            <if test="date != null">
+                `date` = #{date,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cmos.beans.AttendanceRecordDO">
+    update t_attendance_record
+    set staff_id = #{staffId,jdbcType=INTEGER},
+      `date` = #{date,jdbcType=TIMESTAMP}
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+</mapper>

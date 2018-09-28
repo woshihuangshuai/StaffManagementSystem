@@ -58,3 +58,18 @@ set global time_zone = '+8:00';
 set time_zone = '+8:00';
 /*立即生效*/
 flush privileges;
+
+CREATE TABLE t_attendance_record (
+	record_id INT ( 12 ) NOT NULL COMMENT '考勤记录ID' auto_increment,
+	staff_id INT ( 12 ) NOT NULL COMMENT '员工ID',
+	date TIMESTAMP DEFAULT now( ) NOT NULL COMMENT '考勤时间',
+	PRIMARY KEY ( record_id ) 
+);
+
+
+
+
+
+
+
+
