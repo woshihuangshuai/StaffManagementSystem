@@ -1,6 +1,12 @@
 package com.cmos.beans.dto;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+/**
+ * @author HS
+ */
 public class AttendanceRecordDTO {
 
     /**
@@ -11,11 +17,13 @@ public class AttendanceRecordDTO {
     /**
      * 员工ID
      */
+    @NotNull(message = "员工Id不能为空")
     private Integer staffId;
 
     /**
      * 考勤时间
      */
+    @NotBlank(message = "日期不能为空")
     private String date;
 
     public Integer getRecordId() {

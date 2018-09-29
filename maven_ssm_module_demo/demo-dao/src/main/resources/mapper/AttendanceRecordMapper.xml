@@ -22,7 +22,7 @@
         where staff_id = #{staffId,jdbcType=INTEGER}
     </select>
     <select id="getRecordList" parameterType="java.lang.Integer" resultType="java.util.Map">
-        select t1.staff_name, t1.staff_department, t2.date
+        select t1.staff_name as '员工姓名', t1.staff_department as '部门', t2.date as '打卡日期'
         from staff_info t1 INNER JOIN t_attendance_record t2 ON t1.staff_id = t2.staff_id
         where 1=1 and
             t2.staff_id = #{staffId, jdbcType=INTEGER}

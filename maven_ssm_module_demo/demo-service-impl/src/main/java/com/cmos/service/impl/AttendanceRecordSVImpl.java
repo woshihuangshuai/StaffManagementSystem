@@ -60,6 +60,11 @@ public class AttendanceRecordSVImpl implements IAttendanceRecordSV {
         return attendanceRecordDAO.updateByPrimaryKey(attendanceRecordDO);
     }
 
+    @Override
+    public int updateSelective(AttendanceRecordDO attendanceRecordDO) {
+        return attendanceRecordDAO.updateByPrimaryKeySelective(attendanceRecordDO);
+    }
+
     /**
      * 根据staffId查询员工打卡记录
      *

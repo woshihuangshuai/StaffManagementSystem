@@ -11,8 +11,15 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.ResourceUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,10 +50,31 @@ public class AttendanceRecordController {
 
     @ApiOperation(value = "插入记录", notes = "插入员工打卡记录")
     @PostMapping("/insert")
-    public Map insertAttendanceRecord(@RequestBody AttendanceRecordDTO attendanceRecordDTO) throws ParseException {
+    public Map insertAttendanceRecord(@Valid @RequestBody AttendanceRecordDTO attendanceRecordDTO, @ApiIgnore Errors errors) throws ParseException {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("action", "insert");
         resultMap.put("table", "t_attendance_record");
+
+        Map<String, Object> errorMap = new HashMap<>();
+        if (errors.getErrorCount() > 0) {
+            List<ObjectError> objectErrorList = errors.getAllErrors();
+            for (ObjectError objectError : objectErrorList) {
+                String key;
+                String errorMessage;
+                if (objectError instanceof FieldError) {
+                    FieldError fieldError = (FieldError) objectError;
+                    key = fieldError.getField();
+                } else {
+                    key = objectError.getObjectName();
+                }
+                errorMessage = objectError.getDefaultMessage();
+                errorMap.put(key, errorMessage);
+            }
+
+            resultMap.put("errors", errorMap);
+            return resultMap;
+        }
+
         AttendanceRecordDO attendanceRecordDO = new AttendanceRecordDO();
         if (attendanceRecordDTO.getRecordId() != null) {
             attendanceRecordDO.setRecordId(attendanceRecordDTO.getRecordId());
@@ -94,6 +122,21 @@ public class AttendanceRecordController {
         return resultMap;
     }
 
+    @ApiOperation(value = "修改员工打卡记录")
+    @PostMapping("/update")
+    public ModelAndView updateRecord(@RequestBody AttendanceRecordDTO attendanceRecordDTO) throws ParseException {
+        AttendanceRecordDO attendanceRecordDO = new AttendanceRecordDO();
+        attendanceRecordDO.setRecordId(attendanceRecordDTO.getRecordId());
+        attendanceRecordDO.setStaffId(attendanceRecordDTO.getStaffId());
+        attendanceRecordDO.setDate(dateformat.parse(attendanceRecordDTO.getDate()));
+        iAttendanceRecordSV.updateSelective(attendanceRecordDO);
+
+        int staffId = attendanceRecordDTO.getStaffId();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/attendanceRecord/staff/" + staffId);
+        return modelAndView;
+    }
+
     @ApiOperation(value = "查询员工打卡记录", notes = "staff_info和t_attendance_record联合查询的结果")
     @ApiImplicitParam(name = "staffId", required = false, defaultValue = "1", dataTypeClass = Integer.class)
     @GetMapping("/recordList/{staffId}")
@@ -103,6 +146,27 @@ public class AttendanceRecordController {
         resultMap.put("table", "t_attendance_record");
         List<Map<String, String>> resultList = iAttendanceRecordSV.getRecordList(staffId);
         resultMap.put("result", resultList);
+        return resultMap;
+    }
+
+    @ApiOperation(value = "测试spring数据校验")
+    @PostMapping("/validation")
+    public Map testDataValidation(@Valid @RequestBody AttendanceRecordDTO attendanceRecordDTO, @ApiIgnore Errors errors) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("errorCount", errors.getErrorCount());
+        List<ObjectError> objectErrorList = errors.getAllErrors();
+        for (ObjectError objectError : objectErrorList) {
+            String key;
+            String errorMessage;
+            if (objectError instanceof FieldError) {
+                FieldError fieldError = (FieldError) objectError;
+                key = fieldError.getField();
+            } else {
+                key = objectError.getObjectName();
+            }
+            errorMessage = objectError.getDefaultMessage();
+            resultMap.put(key, errorMessage);
+        }
         return resultMap;
     }
 }

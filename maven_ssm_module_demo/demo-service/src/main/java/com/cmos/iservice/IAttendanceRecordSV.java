@@ -39,6 +39,14 @@ public interface IAttendanceRecordSV {
     int update(AttendanceRecordDO attendanceRecordDO);
 
     /**
+     * update不需要全部字段，仅需要id和需更新的字段
+     * no use
+     * @param attendanceRecordDO
+     * @return
+     */
+    int updateSelective(AttendanceRecordDO attendanceRecordDO);
+
+    /**
      * 根据staffId查询员工打卡记录
      * @param staffId
      * @return

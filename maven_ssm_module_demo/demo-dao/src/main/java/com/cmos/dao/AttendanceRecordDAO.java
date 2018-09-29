@@ -5,6 +5,9 @@ import com.cmos.beans.AttendanceRecordDO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author HS
+ */
 public interface AttendanceRecordDAO {
 
     int deleteByPrimaryKey(Integer recordId);
@@ -19,6 +22,11 @@ public interface AttendanceRecordDAO {
 
     int updateByPrimaryKey(AttendanceRecordDO record);
 
+    /**
+     * 查询打卡表中的记录
+     * @param staffId
+     * @return
+     */
     List<AttendanceRecordDO> getRecordByStaffId(Integer staffId);
 
     /**
