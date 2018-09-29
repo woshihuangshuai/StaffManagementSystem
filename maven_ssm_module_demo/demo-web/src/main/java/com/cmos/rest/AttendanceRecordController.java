@@ -6,6 +6,7 @@ import com.cmos.beans.Staff;
 import com.cmos.beans.dto.AttendanceRecordDTO;
 import com.cmos.iservice.IAttendanceRecordSV;
 import com.cmos.iservice.IStaffSV;
+import com.cmos.validator.AttendanceRecordDTOValidator;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import springfox.documentation.annotations.ApiIgnore;
@@ -147,6 +149,11 @@ public class AttendanceRecordController {
         List<Map<String, String>> resultList = iAttendanceRecordSV.getRecordList(staffId);
         resultMap.put("result", resultList);
         return resultMap;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setValidator(new AttendanceRecordDTOValidator());
     }
 
     @ApiOperation(value = "测试spring数据校验")
