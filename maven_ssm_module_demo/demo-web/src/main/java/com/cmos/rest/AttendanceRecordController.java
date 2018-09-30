@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.cmos.beans.AttendanceRecordDO;
 import com.cmos.beans.Staff;
 import com.cmos.beans.dto.AttendanceRecordDTO;
+import com.cmos.iservice.AsyncSV;
 import com.cmos.iservice.IAttendanceRecordSV;
 import com.cmos.iservice.IStaffSV;
 import com.cmos.validator.AttendanceRecordDTOValidator;
@@ -35,7 +36,7 @@ import java.util.Map;
 @RequestMapping("/attendanceRecord")
 public class AttendanceRecordController {
 
-    private Logger logger = LoggerFactory.getLogger(AttendanceRecordController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AttendanceRecordController.class);
 
     @Reference(version = "${demo.service.version}",
             application = "${dubbo.application.id}",
@@ -46,6 +47,11 @@ public class AttendanceRecordController {
             application = "${dubbo.application.id}",
             url = "dubbo://localhost:12345")
     private IStaffSV iStaffSV;
+
+    @Reference(version = "${demo.service.version}",
+            application = "${dubbo.application.id}",
+            url = "dubbo://localhost:12345")
+    private AsyncSV asyncSV;
 
     private DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -174,5 +180,13 @@ public class AttendanceRecordController {
             resultMap.put(key, errorMessage);
         }
         return resultMap;
+    }
+
+    @ApiOperation(value = "调用异步线程服务")
+    @GetMapping("/testAsync")
+    public String testAsyncService() {
+        LOGGER.info("Controller执行中，当前线程：" + Thread.currentThread().getName());
+        asyncSV.testAsyncSV();
+        return "调用成功";
     }
 }
