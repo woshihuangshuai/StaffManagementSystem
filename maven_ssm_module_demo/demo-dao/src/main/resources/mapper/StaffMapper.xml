@@ -22,13 +22,16 @@
     delete from staff_info
     where staff_id = #{staff_id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.cmos.beans.Staff">
+    <insert id="insert" parameterType="com.cmos.beans.Staff" useGeneratedKeys="true" keyProperty="staff_id">
     insert into staff_info (staff_id, staff_name, staff_date_of_birth,
       staff_department, staff_post, staff_level
       )
     values (#{staff_id,jdbcType=INTEGER}, #{staff_name,jdbcType=VARCHAR}, #{staff_date_of_birth,jdbcType=DATE},
       #{staff_department,jdbcType=VARCHAR}, #{staff_post,jdbcType=VARCHAR}, #{staff_level,jdbcType=VARCHAR}
       )
+    <!--<selectKey keyColumn="staff_id" resultType="long" keyProperty="staff_id" order="AFTER">-->
+        <!--select LAST_INSERT_ID()-->
+    <!--</selectKey>-->
   </insert>
     <insert id="insertSelective" parameterType="com.cmos.beans.Staff">
         insert into staff_info
