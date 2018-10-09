@@ -18,6 +18,18 @@
         from staff_info
         where staff_id = #{staff_id,jdbcType=INTEGER}
     </select>
+    <select id="selectByObject" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff_info
+        where 1=1
+        <if test="staff_id != null">
+            and staff_id = #{staff_id}
+        </if>
+        <if test="staff_name != null and staff_name != ''">
+            and staff_name = #{staff_name}
+        </if>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from staff_info
     where staff_id = #{staff_id,jdbcType=INTEGER}

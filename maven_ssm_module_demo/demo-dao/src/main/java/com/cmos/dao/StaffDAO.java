@@ -15,4 +15,6 @@ public interface StaffDAO {
     int updateByPrimaryKeySelective(Staff record);
 
     int insertSelective(Staff record);
+
+    Staff selectByObject(Staff staff);
 }

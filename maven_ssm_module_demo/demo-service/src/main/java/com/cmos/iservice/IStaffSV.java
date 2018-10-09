@@ -32,4 +32,11 @@ public interface IStaffSV {
      */
     Staff insertStaff(Staff staff);
 
+    /**
+     * 根据多个属性查询员工信息
+     * @param staff
+     * @return
+     */
+    Staff selectByObject(Staff staff);
+
 }

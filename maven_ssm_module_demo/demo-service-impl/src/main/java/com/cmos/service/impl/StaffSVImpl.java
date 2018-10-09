@@ -89,4 +89,10 @@ public class StaffSVImpl implements IStaffSV {
         }
         return null;
     }
+
+    @Override
+    @Transactional(rollbackFor = {RuntimeException.class})
+    public Staff selectByObject(Staff staff) {
+        return staffdao.selectByObject(staff);
+    }
 }

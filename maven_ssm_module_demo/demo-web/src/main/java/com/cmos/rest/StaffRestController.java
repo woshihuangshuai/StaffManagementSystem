@@ -122,4 +122,22 @@ public class StaffRestController {
         }
         return resultMap;
     }
+
+    @ApiOperation(value = "根据多个属性查询员工信息")
+    @ApiImplicitParam(name = "staffDTO", value = "员工数据传输对象", required = true, dataType = "StaffDTO")
+    @RequestMapping(value = "/selectByObject", method = RequestMethod.POST)
+    public Map selectByObject(@RequestBody StaffDTO staffDTO) throws ParseException {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("action", "read");
+        Staff staff = new Staff();
+        if (staffDTO.getStaff_id() != null) {
+            staff.setStaff_id(Long.parseLong(staffDTO.getStaff_id()));
+        }
+        if (staffDTO.getStaff_name() != null) {
+            staff.setStaff_name(staffDTO.getStaff_name());
+        }
+        logger.info("获取员工信息:" + staff.getStaff_id() + staff.getStaff_name());
+        resultMap.put("result", iStaffSV.selectByObject(staff));
+        return resultMap;
+    }
 }
