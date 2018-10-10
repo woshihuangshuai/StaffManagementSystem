@@ -1,6 +1,7 @@
 package com.cmos.rest;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSONArray;
 import com.cmos.beans.Staff;
 import com.cmos.beans.dto.StaffDTO;
 import com.cmos.iservice.IStaffSV;
@@ -14,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -138,6 +140,30 @@ public class StaffRestController {
         }
         logger.info("获取员工信息:" + staff.getStaff_id() + staff.getStaff_name());
         resultMap.put("result", iStaffSV.selectByObject(staff));
+        return resultMap;
+    }
+
+    @ApiOperation(value = "通过id列表查询员工信息")
+    @ApiImplicitParam(name = "staffIdList", value = "员工Id列表", defaultValue = "[1, 2]", required = true, dataType = "List")
+    @RequestMapping(value = "/selectByList", method = RequestMethod.POST)
+    public Map selectByList(@RequestBody List<Integer> staffIdList) {
+        logger.info(staffIdList.toString());
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("action", "selectByList");
+        List<Staff> staffList = iStaffSV.selectByList(staffIdList);
+        resultMap.put("result", staffList);
+        return resultMap;
+    }
+
+    @ApiOperation(value = "通过id数组查询员工信息")
+    @ApiImplicitParam(name = "staffIdArray", value = "员工id数组", defaultValue = "[1, 2]", required = true)
+    @RequestMapping(value = "/selectByArray", method = RequestMethod.POST)
+    public Map selectByArray(@RequestBody Integer[] staffIdArray) {
+        logger.info(JSONArray.toJSON(staffIdArray).toString());
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("action", "selectByArray");
+        List<Staff> staffList = iStaffSV.selectByArray(staffIdArray);
+        resultMap.put("result", staffList);
         return resultMap;
     }
 }

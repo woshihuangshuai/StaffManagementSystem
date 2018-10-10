@@ -30,6 +30,24 @@
             and staff_name = #{staff_name}
         </if>
     </select>
+    <select id="selectByList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff_info
+        where staff_id in
+        <foreach collection="list" open="(" close=")" separator="," item="staff_id" index="i">
+            #{staff_id}
+        </foreach>
+    </select>
+    <select id="selectByArray" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff_info
+        where staff_id in
+        <foreach collection="staffIdArray" open="(" close=")" separator="," item="staff_id" index="i">
+            #{staff_id}
+        </foreach>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from staff_info
     where staff_id = #{staff_id,jdbcType=INTEGER}

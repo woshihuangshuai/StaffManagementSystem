@@ -2,6 +2,8 @@ package com.cmos.iservice;
 
 import com.cmos.beans.Staff;
 
+import java.util.List;
+
 public interface IStaffSV {
 
     /**
@@ -38,5 +40,19 @@ public interface IStaffSV {
      * @return
      */
     Staff selectByObject(Staff staff);
+
+    /**
+     * 根据列表查询员工信息
+     * @param staffIdList
+     * @return
+     */
+    List<Staff> selectByList(List<Integer> staffIdList);
+
+    /**
+     * 根据员工id数组查询员工信息
+     * @param staffIdArray
+     * @return
+     */
+    List<Staff> selectByArray(Integer[] staffIdArray);
 
 }

@@ -14,6 +14,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service(
         version = "${demo.service.version}",
         application = "${dubbo.application.id}",
@@ -94,5 +96,27 @@ public class StaffSVImpl implements IStaffSV {
     @Transactional(rollbackFor = {RuntimeException.class})
     public Staff selectByObject(Staff staff) {
         return staffdao.selectByObject(staff);
+    }
+
+    /**
+     * 根据列表查询员工信息
+     *
+     * @param staffIdList
+     * @return
+     */
+    @Override
+    public List<Staff> selectByList(List<Integer> staffIdList) {
+        return staffdao.selectByList(staffIdList);
+    }
+
+    /**
+     * 根据员工id数组查询员工信息
+     *
+     * @param staffIdArray
+     * @return
+     */
+    @Override
+    public List<Staff> selectByArray(Integer[] staffIdArray) {
+        return staffdao.selectByArray(staffIdArray);
     }
 }
