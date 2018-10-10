@@ -166,4 +166,17 @@ public class StaffRestController {
         resultMap.put("result", staffList);
         return resultMap;
     }
+
+    @ApiOperation(value = "批量插入员工信息")
+    @ApiImplicitParam(name = "staffList", value = "员工信息列表", required = true, dataType = "List")
+    @RequestMapping(value = "/insertList", method = RequestMethod.POST)
+    public Map insertList(@RequestBody List<Staff> staffList) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("action", "insertList");
+        logger.info(JSONArray.toJSON(staffList).toString());
+        int result = iStaffSV.insertByList(staffList);
+        resultMap.put("result", result);
+        logger.info(JSONArray.toJSON(staffList).toString());
+        return resultMap;
+    }
 }

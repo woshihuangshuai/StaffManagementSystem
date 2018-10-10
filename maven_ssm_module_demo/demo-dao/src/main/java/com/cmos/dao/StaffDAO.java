@@ -35,4 +35,10 @@ public interface StaffDAO {
      */
     List<Staff> selectByArray(@Param("staffIdArray") Integer[] staffIdArray);
 
+    /**
+     * 批量插入员工信息，并回写员工id
+     * @param staffList
+     * @return 插入操作影响的数据库行数
+     */
+    int insertByList(List<Staff> staffList);
 }

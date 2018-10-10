@@ -1,13 +1,16 @@
 package com.cmos.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSONArray;
 import com.cmos.beans.Staff;
 import com.cmos.dao.StaffDAO;
 import com.cmos.iservice.IStaffSV;
 import com.cmos.utils.annotation.Log;
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -84,8 +87,9 @@ public class StaffSVImpl implements IStaffSV {
     @Transactional(rollbackFor = {RuntimeException.class})
     @CachePut(value = "redisCache", condition = "#result != 0", key = "'redis_user_'+#result.staff_id")
     public Staff insertStaff(Staff staff) {
-        // 如果插入Id为null时，添加到缓存中的员工信息key为redis_user_null
+        logger.info(JSONArray.toJSON(staff).toString());
         int resultCode = staffdao.insert(staff);
+        logger.info(JSONArray.toJSON(staff).toString());
         if (resultCode == 1) {
             return staff;
         }
@@ -118,5 +122,23 @@ public class StaffSVImpl implements IStaffSV {
     @Override
     public List<Staff> selectByArray(Integer[] staffIdArray) {
         return staffdao.selectByArray(staffIdArray);
+    }
+
+    /**
+     * 批量插入员工信息，返回影响的数据库行数
+     *
+     * @param staffList
+     * @return
+     */
+    @Override
+    public int insertByList(List<Staff> staffList) {
+        for (Staff staff : staffList) {
+            logger.info("插入之前：" + JSONArray.toJSON(staff).toString());
+        }
+        int result = staffdao.insertByList(staffList);
+        for (Staff staff : staffList) {
+            logger.info("插入之后：" + JSONArray.toJSON(staff).toString());
+        }
+        return result;
     }
 }

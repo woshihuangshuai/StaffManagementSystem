@@ -55,4 +55,10 @@ public interface IStaffSV {
      */
     List<Staff> selectByArray(Integer[] staffIdArray);
 
+    /**
+     * 批量插入员工信息，返回影响的数据库行数
+     * @param staffList
+     * @return
+     */
+    int insertByList(List<Staff> staffList);
 }
