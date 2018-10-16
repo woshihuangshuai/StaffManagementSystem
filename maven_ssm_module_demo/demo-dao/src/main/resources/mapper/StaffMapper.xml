@@ -48,6 +48,20 @@
             #{staff_id}
         </foreach>
     </select>
+    <select id="selectStaffWithAttendanceRecordByStaffId" parameterType="com.cmos.beans.Staff" resultType="com.cmos.beans.Staff">
+    select
+    t1.staff_id staff_id,
+    t1.staff_name staff_name,
+    t1.staff_date_of_birth staff_date_of_birth,
+    t1.staff_department staff_department,
+    t1.staff_post staff_post,
+    t1.staff_level staff_level,
+    t2.record_id 'attendanceRecordDO.recordId',
+    t2.staff_id 'attendanceRecordDO.staffId',
+    t2.date 'attendanceRecordDO.date'
+    from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
+    where t1.staff_id = #{staff_id}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from staff_info
     where staff_id = #{staff_id,jdbcType=INTEGER}

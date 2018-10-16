@@ -20,6 +20,7 @@ public class Staff implements Serializable {
         this.staff_department = staff_department;
         this.staff_post = staff_post;
         this.staff_level = staff_level;
+        this.attendanceRecordDO = null;
     }
 
     private Long staff_id;
@@ -33,6 +34,9 @@ public class Staff implements Serializable {
     private String staff_post;
 
     private String staff_level;
+
+    private AttendanceRecordDO attendanceRecordDO;
+
 
     public Long getStaff_id() {
         return staff_id;
@@ -86,4 +90,11 @@ public class Staff implements Serializable {
         this.staff_level = staff_level == null ? null : staff_level.trim();
     }
 
+    public AttendanceRecordDO getAttendanceRecordDO() {
+        return attendanceRecordDO;
+    }
+
+    public void setAttendanceRecordDO(AttendanceRecordDO attendanceRecordDO) {
+        this.attendanceRecordDO = attendanceRecordDO;
+    }
 }

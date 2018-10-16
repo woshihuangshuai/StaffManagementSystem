@@ -41,4 +41,11 @@ public interface StaffDAO {
      * @return 插入操作影响的数据库行数
      */
     int insertByList(List<Staff> staffList);
+
+    /**
+     * 查询带有打卡记录的员工信息
+     * @param staff 员工Id
+     * @return
+     */
+    Staff selectStaffWithAttendanceRecordByStaffId(Staff staff);
 }

@@ -179,4 +179,21 @@ public class StaffRestController {
         logger.info(JSONArray.toJSON(staffList).toString());
         return resultMap;
     }
+
+    @ApiOperation(value = "查询带有打卡记录的员工信息")
+    @ApiImplicitParam(name = "staffDTO", value = "员工对象", required = true, dataType = "Staff")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    public Map selectStaffWithAttendanceRecordByStaffId(@RequestBody StaffDTO staffDTO) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Staff staff = new Staff();
+        staff.setStaff_id(Long.parseLong(staffDTO.getStaff_id()));
+        Staff resultObject = iStaffSV.selectStaffWithAttendanceRecordByStaffId(staff);
+        resultMap.put("result", resultObject);
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String test(String testStr) {
+        return "hello" + testStr;
+    }
 }
