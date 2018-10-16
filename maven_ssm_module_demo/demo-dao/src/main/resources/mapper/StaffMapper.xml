@@ -48,17 +48,13 @@
             #{staff_id}
         </foreach>
     </select>
-    <resultMap id="StaffResultMap" type="com.cmos.beans.Staff">
-        <id property="staff_id" column="staff_id"/>
-        <result property="staff_name" column="staff_name"/>
-        <result property="staff_date_of_birth" column="staff_date_of_birth"/>
-        <result property="staff_department" column="staff_department"/>
-        <result property="staff_post" column="staff_post"/>
-        <result property="staff_level" column="staff_level"/>
+    <resultMap id="StaffResultMap" extends="BaseResultMap" type="com.cmos.beans.Staff">
         <!--AttendanceRecord映射表-->
-        <result property="attendanceRecordDO.recordId" column="record_id"/>
-        <result property="attendanceRecordDO.staffId" column="role_staff_id"/>
-        <result property="attendanceRecordDO.date" column="date"/>
+        <association property="attendanceRecordDO" columnPrefix="attendance_" javaType="com.cmos.beans.AttendanceRecordDO">
+            <result property="recordId" column="record_id"/>
+            <result property="staffId" column="staff_id"/>
+            <result property="date" column="date"/>
+        </association>
     </resultMap>
     <select id="selectStaffWithAttendanceRecordByStaffId" parameterType="com.cmos.beans.Staff" resultMap="StaffResultMap">
     select
@@ -68,9 +64,9 @@
     t1.staff_department,
     t1.staff_post,
     t1.staff_level,
-    t2.record_id,
-    t2.staff_id role_staff_id,
-    t2.date
+    t2.record_id attendance_record_id,
+    t2.staff_id attendance_staff_id,
+    t2.date attendance_date
     from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
     where t1.staff_id = #{staff_id}
     </select>
