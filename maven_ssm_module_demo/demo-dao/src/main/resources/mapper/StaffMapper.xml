@@ -48,12 +48,18 @@
             #{staff_id}
         </foreach>
     </select>
+
+
+    <resultMap id="RecordResultMap" type="com.cmos.beans.AttendanceRecordDO">
+        <id column="record_id" jdbcType="INTEGER" property="recordId"/>
+        <result column="staff_id" jdbcType="INTEGER" property="staffId"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
     <resultMap id="StaffResultMap" extends="BaseResultMap" type="com.cmos.beans.Staff">
         <!--AttendanceRecord映射表-->
-        <association property="attendanceRecordDO" columnPrefix="attendance_" javaType="com.cmos.beans.AttendanceRecordDO">
-            <result property="recordId" column="record_id"/>
-            <result property="staffId" column="staff_id"/>
-            <result property="date" column="date"/>
+        <association property="attendanceRecordDO"
+                     columnPrefix="record_"
+                     resultMap="RecordResultMap">
         </association>
     </resultMap>
     <select id="selectStaffWithAttendanceRecordByStaffId" parameterType="com.cmos.beans.Staff" resultMap="StaffResultMap">
@@ -64,9 +70,9 @@
     t1.staff_department,
     t1.staff_post,
     t1.staff_level,
-    t2.record_id attendance_record_id,
-    t2.staff_id attendance_staff_id,
-    t2.date attendance_date
+    t2.staff_id record_staff_id,
+    t2.record_id record_record_id,
+    t2.date record_date
     from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
     where t1.staff_id = #{staff_id}
     </select>
