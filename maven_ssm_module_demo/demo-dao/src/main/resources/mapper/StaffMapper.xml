@@ -55,11 +55,16 @@
         <result column="staff_id" jdbcType="INTEGER" property="staffId"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
     </resultMap>
+    <select id="selectRecord" resultMap="RecordResultMap">
+        select *
+        from t_attendance_record
+        where staff_id = #{id}
+    </select>
     <resultMap id="StaffResultMap" extends="BaseResultMap" type="com.cmos.beans.Staff">
         <!--AttendanceRecord映射表-->
         <association property="attendanceRecordDO"
-                     columnPrefix="record_"
-                     resultMap="RecordResultMap">
+                     column="id=record_id"
+                     select="selectRecord">
         </association>
     </resultMap>
     <select id="selectStaffWithAttendanceRecordByStaffId" parameterType="com.cmos.beans.Staff" resultMap="StaffResultMap">
@@ -70,9 +75,7 @@
     t1.staff_department,
     t1.staff_post,
     t1.staff_level,
-    t2.staff_id record_staff_id,
-    t2.record_id record_record_id,
-    t2.date record_date
+    t2.record_id
     from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
     where t1.staff_id = #{staff_id}
     </select>
