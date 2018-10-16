@@ -61,4 +61,6 @@ public interface IStaffSV {
      * @return
      */
     int insertByList(List<Staff> staffList);
+
+    Staff selectStaffWithAttendanceRecordByStaffId(Staff staff);
 }

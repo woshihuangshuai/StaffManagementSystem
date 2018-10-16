@@ -141,4 +141,9 @@ public class StaffSVImpl implements IStaffSV {
         }
         return result;
     }
+
+    @Override
+    public Staff selectStaffWithAttendanceRecordByStaffId(Staff staff) {
+        return staffdao.selectStaffWithAttendanceRecordByStaffId(staff);
+    }
 }
