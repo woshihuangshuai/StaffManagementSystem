@@ -49,7 +49,7 @@
         </foreach>
     </select>
 
-
+    <!-- 一对一映射 -->
     <resultMap id="RecordResultMap" type="com.cmos.beans.AttendanceRecordDO">
         <id column="record_id" jdbcType="INTEGER" property="recordId"/>
         <result column="staff_id" jdbcType="INTEGER" property="staffId"/>
@@ -67,7 +67,7 @@
                      select="selectRecord">
         </association>
     </resultMap>
-    <select id="selectStaffWithAttendanceRecordByStaffId" parameterType="com.cmos.beans.Staff" resultMap="StaffResultMap">
+    <select id="selectStaffWithAttendanceRecordByStaffId2" parameterType="com.cmos.beans.Staff" resultMap="StaffResultMap">
     select
     t1.staff_id,
     t1.staff_name,
@@ -79,6 +79,32 @@
     from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
     where t1.staff_id = #{staff_id}
     </select>
+    <!-- 一对多映射 -->
+    <resultMap id="StaffRecordResultMap" type="com.cmos.beans.Staff" extends="BaseResultMap">
+        <collection property="attendanceRecordDOList"
+                    ofType="com.cmos.beans.AttendanceRecordDO"
+                    columnPrefix="record_">
+            <id property="recordId" column="record_id"/>
+            <result property="staffId" column="staff_id"/>
+            <result property="date" column="date"/>
+        </collection>
+    </resultMap>
+    <select id="selectStaffWithAttendanceRecordByStaffId" resultMap="StaffRecordResultMap">
+        select
+        t1.staff_id,
+        t1.staff_date_of_birth,
+        t1.staff_department,
+        t1.staff_level,
+        t1.staff_name,
+        t1.staff_post,
+        t2.record_id record_record_id,
+        t2.staff_id record_staff_id,
+        t2.date record_date
+        from staff_info t1 inner join t_attendance_record t2 on t1.staff_id = t2.staff_id
+        where t1.staff_id = #{staff_id}
+    </select>
+
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from staff_info
     where staff_id = #{staff_id,jdbcType=INTEGER}

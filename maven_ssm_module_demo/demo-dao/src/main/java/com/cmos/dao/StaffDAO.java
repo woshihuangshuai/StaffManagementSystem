@@ -48,4 +48,5 @@ public interface StaffDAO {
      * @return
      */
     Staff selectStaffWithAttendanceRecordByStaffId(Staff staff);
+
 }

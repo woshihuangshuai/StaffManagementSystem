@@ -182,7 +182,7 @@ public class StaffRestController {
 
     @ApiOperation(value = "查询带有打卡记录的员工信息")
     @ApiImplicitParam(name = "staffDTO", value = "员工对象", required = true, dataType = "Staff")
-    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectStaffWithRecord", method = RequestMethod.POST)
     public Map selectStaffWithAttendanceRecordByStaffId(@RequestBody StaffDTO staffDTO) {
         Map<String, Object> resultMap = new HashMap<>();
         Staff staff = new Staff();
