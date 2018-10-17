@@ -83,10 +83,8 @@
     <resultMap id="StaffRecordResultMap" type="com.cmos.beans.Staff" extends="BaseResultMap">
         <collection property="attendanceRecordDOList"
                     ofType="com.cmos.beans.AttendanceRecordDO"
-                    columnPrefix="record_">
-            <id property="recordId" column="record_id"/>
-            <result property="staffId" column="staff_id"/>
-            <result property="date" column="date"/>
+                    columnPrefix="record_"
+                    resultMap="RecordResultMap">
         </collection>
     </resultMap>
     <select id="selectStaffWithAttendanceRecordByStaffId" resultMap="StaffRecordResultMap">
