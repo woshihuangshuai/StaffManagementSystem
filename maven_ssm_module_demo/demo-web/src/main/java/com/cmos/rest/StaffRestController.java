@@ -33,6 +33,15 @@ public class StaffRestController {
     private IStaffSV iStaffSV;
     private DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 
+    @ApiOperation(value = "分页查询员工信息")
+    @RequestMapping(value = "/selectByPage", method = RequestMethod.POST)
+    public Map<String, Object> selectAll(@RequestParam Integer pageNum) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("action", "分页查询");
+        resultMap.put("result", iStaffSV.selectByPage(pageNum));
+        return resultMap;
+    }
+
     @ApiOperation(value = "获取员工", notes = "根据staff_id获取员工")
     @ApiImplicitParam(name = "staff_id", value = "员工Id", required = true, dataType = "String")
     @RequestMapping(value = "/{staff_id}", method = RequestMethod.GET)
