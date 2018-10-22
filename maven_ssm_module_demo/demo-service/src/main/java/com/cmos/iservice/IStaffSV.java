@@ -1,10 +1,23 @@
 package com.cmos.iservice;
 
 import com.cmos.beans.Staff;
+import com.sun.javafx.image.IntPixelGetter;
 
 import java.util.List;
 
 public interface IStaffSV {
+
+    /**
+     * 查询所有员工信息
+     * @return
+     */
+    List<Staff> selectAll();
+
+    /**
+     * 分页查询员工信息
+     * @return
+     */
+    List<Staff> selectByPage(Integer pageNum);
 
     /**
      * 根据staff_id查找员工信息

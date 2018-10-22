@@ -1,6 +1,8 @@
 package com.cmos.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author HS
@@ -21,6 +23,7 @@ public class Staff implements Serializable {
         this.staff_post = staff_post;
         this.staff_level = staff_level;
         this.attendanceRecordDO = null;
+        this.attendanceRecordDOList = new ArrayList<>();
     }
 
     private Long staff_id;
@@ -37,6 +40,7 @@ public class Staff implements Serializable {
 
     private AttendanceRecordDO attendanceRecordDO;
 
+    private List<AttendanceRecordDO> attendanceRecordDOList;
 
     public Long getStaff_id() {
         return staff_id;
@@ -96,5 +100,13 @@ public class Staff implements Serializable {
 
     public void setAttendanceRecordDO(AttendanceRecordDO attendanceRecordDO) {
         this.attendanceRecordDO = attendanceRecordDO;
+    }
+
+    public List<AttendanceRecordDO> getAttendanceRecordDOList() {
+        return attendanceRecordDOList;
+    }
+
+    public void setAttendanceRecordDOList(List<AttendanceRecordDO> attendanceRecordDOList) {
+        this.attendanceRecordDOList = attendanceRecordDOList;
     }
 }

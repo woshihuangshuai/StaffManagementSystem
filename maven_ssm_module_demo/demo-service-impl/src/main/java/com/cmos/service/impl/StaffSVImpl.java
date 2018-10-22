@@ -6,6 +6,7 @@ import com.cmos.beans.Staff;
 import com.cmos.dao.StaffDAO;
 import com.cmos.iservice.IStaffSV;
 import com.cmos.utils.annotation.Log;
+import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,25 @@ public class StaffSVImpl implements IStaffSV {
 
     @Autowired
     private StaffDAO staffdao;
+
+    /**
+     * 查询所有员工信息
+     *
+     * @return
+     */
+    @Override
+    public List<Staff> selectAll() {
+        PageHelper.startPage(1, 3);
+        List<Staff> staffList = staffdao.selectAll();
+        return staffList;
+    }
+
+    @Override
+    public List<Staff> selectByPage(Integer pageNum) {
+        PageHelper.startPage(pageNum, 3);
+        List<Staff> staffList = staffdao.selectAll();
+        return staffList;
+    }
 
     /**
      * 根据staff_id查找员工信息

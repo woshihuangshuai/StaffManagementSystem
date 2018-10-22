@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface StaffDAO {
 
+    List<Staff> selectAll();
+
     Staff selectByPrimaryKey(Integer staff_id);
 
     int updateByPrimaryKey(Staff record);
@@ -48,4 +50,5 @@ public interface StaffDAO {
      * @return
      */
     Staff selectStaffWithAttendanceRecordByStaffId(Staff staff);
+
 }
