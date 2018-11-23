@@ -1,12 +1,11 @@
 package com.cmos.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,12 +18,6 @@ import java.util.List;
 
 @Controller
 public class FileController {
-    @RequestMapping("/greeting")
-    public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     //文件上传相关代码
@@ -62,19 +55,21 @@ public class FileController {
 
     //文件下载相关代码
     @RequestMapping(value = "/download")
-    public String downloadFile(org.apache.catalina.servlet4preview.http.HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    public String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         String fileName = "匆匆那年.mp3";
+
         if (fileName != null) {
-            //当前是从该工程的WEB-INF//File//下获取文件(该目录可以在下面一行代码配置)然后下载到C:\\users\\downloads即本机的默认下载的目录
+            //当前是从该工程的WEB-INF目录下获取文件(该目录可以在下面一行代码配置)
+            // 然后下载到C:\\users\\downloads即本机的默认下载的目录
             String realPath = request.getServletContext().getRealPath(
                     "//WEB-INF//");
             File file = new File(realPath, fileName);
             if (file.exists()) {
-                response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/force-download");// 设置强制下载不打开
-                response.addHeader("Content-Disposition",
-                        "attachment;fileName=" +
-                                URLEncoder.encode(fileName, "UTF-8"));// 设置文件名
+                response.addHeader(
+                        "Content-Disposition",
+                        "attachment;fileName=" + URLEncoder.encode(fileName, "UTF-8"));// 设置文件名
+
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null;
                 BufferedInputStream bis = null;
@@ -87,7 +82,6 @@ public class FileController {
                         os.write(buffer, 0, i);
                         i = bis.read(buffer);
                     }
-                    System.out.println("success");
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -117,26 +111,20 @@ public class FileController {
     public String handleFileUpload(HttpServletRequest request) {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
-        MultipartFile file = null;
-        BufferedOutputStream stream = null;
-        for (int i = 0; i < files.size(); ++i) {
-            file = files.get(i);
+        for (MultipartFile file : files) {
             if (!file.isEmpty()) {
                 try {
                     byte[] bytes = file.getBytes();
-                    stream = new BufferedOutputStream(new FileOutputStream(
+                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
                             new File(file.getOriginalFilename())));
                     stream.write(bytes);
                     stream.close();
 
                 } catch (Exception e) {
-                    stream = null;
-                    return "You failed to upload " + i + " => "
-                            + e.getMessage();
+                    return e.getMessage();
                 }
             } else {
-                return "You failed to upload " + i
-                        + " because the file was empty.";
+                return "The file is empty.";
             }
         }
         return "upload successful";
