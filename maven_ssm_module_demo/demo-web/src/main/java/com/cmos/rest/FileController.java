@@ -1,146 +1,144 @@
 package com.cmos.rest;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-
-/**
- * 文件上传下载
- * @author HS
- */
-@RestController
-@RequestMapping("/file")
+@Controller
 public class FileController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
-
-    private static final String filePath = "/testfile/";
-
-    @ApiOperation(value = "文件上传")
-    @ApiImplicitParam(name = "file", required = true, dataTypeClass = MultipartFile.class)
-    @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
-    public Map fileUploadRequest(MultipartFile file) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("action", "File Upload");
-        String result = fileUpload(file);
-        resultMap.put("result", result);
-        return resultMap;
+    @RequestMapping("/greeting")
+    public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
+        model.addAttribute("name", name);
+        return "greeting";
     }
 
-    @ApiOperation(value = "文件下载")
-    @ApiImplicitParam(name = "fileName", value = "文件名", required = true, dataTypeClass = String.class)
-    @RequestMapping(value = "/fileDownload/{fileName}", method = RequestMethod.GET)
-    public Map fileDownloadRequest(@PathVariable("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("action", "File Download");
-        String resultStr = fileDownload(fileName, request, response);
-        resultMap.put("result", resultStr);
-        return resultMap;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
-    public String fileUpload(MultipartFile file) {
+    //文件上传相关代码
+    @RequestMapping(value = "upload")
+    @ResponseBody
+    public String upload(@RequestParam("test") MultipartFile file) {
         if (file.isEmpty()) {
-            return "fail";
+            return "文件为空";
         }
+        // 获取文件名
         String fileName = file.getOriginalFilename();
-        File destFile = new File(filePath + fileName);
-
-        if (!destFile.getParentFile().exists()) {
-            //如果目标文件所在的目录不存在，则创建父目录
-            System.out.println("文件所处目录不存在，创建");
-            //创建目录
-            if (!destFile.getParentFile().mkdirs()) {
-                System.out.println("创建文件所处目录失败！");
-                return "fail";
-            }
+        logger.info("上传的文件名为：" + fileName);
+        // 获取文件的后缀名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        logger.info("上传的后缀名为：" + suffixName);
+        // 文件上传后的路径
+        String filePath = "E://test//";
+        // 解决中文问题，liunx下中文路径，图片显示问题
+        // fileName = UUID.randomUUID() + suffixName;
+        File dest = new File(filePath + fileName);
+        // 检测是否存在目录
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
         }
-
         try {
-            file.transferTo(destFile);
-            return "success";
+            file.transferTo(dest);
+            return "上传成功";
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "fail";
+        return "上传失败";
     }
 
-    public String fileDownload(String fileName, HttpServletRequest request, HttpServletResponse response) {
-        File file = new File(filePath, fileName);
-        //如果文件存在
-        if (file.exists()) {
-            //重置buffer
-            response.resetBuffer();
-            //设定编码为UTF-8
-            response.setCharacterEncoding("UTF-8");
-            //设置头部为下载信息
-            response.setHeader("Content-type", "application/force-download;charset=UTF-8");
-            try {
-                // 设置文件名
-                response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-            //各种流信息
-            FileInputStream fileInputStream = null;
-            BufferedInputStream bufferedInputStream = null;
-            OutputStream outputStream = null;
-
-            try {
+    //文件下载相关代码
+    @RequestMapping(value = "/download")
+    public String downloadFile(org.apache.catalina.servlet4preview.http.HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        String fileName = "匆匆那年.mp3";
+        if (fileName != null) {
+            //当前是从该工程的WEB-INF//File//下获取文件(该目录可以在下面一行代码配置)然后下载到C:\\users\\downloads即本机的默认下载的目录
+            String realPath = request.getServletContext().getRealPath(
+                    "//WEB-INF//");
+            File file = new File(realPath, fileName);
+            if (file.exists()) {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition",
+                        "attachment;fileName=" +
+                                URLEncoder.encode(fileName, "UTF-8"));// 设置文件名
                 byte[] buffer = new byte[1024];
-                fileInputStream = new FileInputStream(file);
-                bufferedInputStream = new BufferedInputStream(fileInputStream);
-                outputStream = response.getOutputStream();
-                int i = bufferedInputStream.read(buffer);
-                while (i != -1) {
-                    outputStream.write(buffer, 0, i);
-                    i = bufferedInputStream.read(buffer);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                //关闭各种流
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
                     }
-
-                }
-                if (bufferedInputStream != null) {
-                    try {
-                        bufferedInputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    System.out.println("success");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                        return "success";
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }//finally结束
+            }
+        }
+        return null;
+    }
 
-        }//if结束
-        return "fail";
-    }//downloadFile结束
+    //多文件上传
+    @RequestMapping(value = "/batch/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public String handleFileUpload(HttpServletRequest request) {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request)
+                .getFiles("file");
+        MultipartFile file = null;
+        BufferedOutputStream stream = null;
+        for (int i = 0; i < files.size(); ++i) {
+            file = files.get(i);
+            if (!file.isEmpty()) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    stream = new BufferedOutputStream(new FileOutputStream(
+                            new File(file.getOriginalFilename())));
+                    stream.write(bytes);
+                    stream.close();
 
+                } catch (Exception e) {
+                    stream = null;
+                    return "You failed to upload " + i + " => "
+                            + e.getMessage();
+                }
+            } else {
+                return "You failed to upload " + i
+                        + " because the file was empty.";
+            }
+        }
+        return "upload successful";
+    }
 }
